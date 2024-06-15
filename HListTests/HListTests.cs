@@ -112,5 +112,21 @@ namespace HListTests
 
             Assert.Equal(2, indexes!.Count);
         }
+
+        [Fact]
+        public void GetMethod_ShouldReturnCorrectListOfValueIndexes_WhenCalledWithThisValue()
+        {
+            var hList = new HList<int?>()
+            {
+                10,
+                15,
+                10
+            };
+
+            var indexes = hList.Get(10);
+
+            Assert.Contains(0, indexes!);
+            Assert.Contains(2, indexes!);
+        }
     }
 }

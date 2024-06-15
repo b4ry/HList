@@ -22,7 +22,7 @@ namespace HList
                 throw new ArgumentNullException();
             }
 
-            var newIndex = _items.Count + 1;
+            var newIndex = _items.Count;
             var hash = argument.GetHashCode();
 
             _items.Add(argument);
