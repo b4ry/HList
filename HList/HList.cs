@@ -5,12 +5,12 @@ namespace HList
     public class HList<T> : IHList<T>, IEnumerable<T>
     {
         private readonly IList<T> _items;
-        private readonly IDictionary<int, HashSet<int>> _valueIndexes;
+        private readonly Dictionary<int, HashSet<int>> _valueIndexes;
 
         public HList()
         {
             _items = [];
-            _valueIndexes = new Dictionary<int, HashSet<int>>();
+            _valueIndexes = [];
         }
 
         public int Count => _items.Count;
@@ -77,7 +77,19 @@ namespace HList
 
             set
             {
-                _items[index] = value;
+                var previousValue = _items[index];
+
+                AddAtIndex(value, index);
+
+                var previousValueHashCode = previousValue!.GetHashCode();
+                var previousValueIndexes = _valueIndexes[previousValueHashCode];
+
+                previousValueIndexes.Remove(index);
+
+                if (previousValueIndexes.Count == 0)
+                {
+                    _valueIndexes.Remove(previousValueHashCode);
+                }
             }
         }
 
@@ -89,6 +101,27 @@ namespace HList
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
+        }
+
+        private void AddAtIndex(T argument, int index)
+        {
+            if (argument == null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            var hash = argument.GetHashCode();
+
+            _items[index] = argument;
+
+            if (_valueIndexes.TryGetValue(hash, out HashSet<int>? indexes))
+            {
+                indexes.Add(index);
+            }
+            else
+            {
+                _valueIndexes.Add(hash, [index]);
+            }
         }
     }
 }
