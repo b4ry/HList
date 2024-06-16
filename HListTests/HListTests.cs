@@ -124,7 +124,7 @@ namespace HListTests
             hList[0] = 1;
 
             // Assert
-            var indexes = hList.Get(10);
+            var indexes = hList.GetIndexes(10);
 
             Assert.Null(indexes);
         }
@@ -143,7 +143,7 @@ namespace HListTests
             hList[1] = 1;
 
             // Assert
-            var indexes = hList.Get(1)!;
+            var indexes = hList.GetIndexes(1)!;
 
             Assert.NotNull(indexes);
             Assert.Equal(2, indexes.Count);
@@ -158,7 +158,7 @@ namespace HListTests
             var hList = new HList<int?>();
 
             // Act & Assert
-            Assert.Throws<ArgumentNullException>(() => hList.Get(null));
+            Assert.Throws<ArgumentNullException>(() => hList.GetIndexes(null));
         }
 
         [Fact]
@@ -172,7 +172,7 @@ namespace HListTests
             };
 
             // Act
-            var indexes = hList.Get(12);
+            var indexes = hList.GetIndexes(12);
 
             // Assert
             Assert.Null(indexes);
@@ -189,7 +189,7 @@ namespace HListTests
             };
 
             // Act
-            var indexes = hList.Get(10)!;
+            var indexes = hList.GetIndexes(10)!;
 
             // Assert
             Assert.Equal(2, indexes.Count);
@@ -207,7 +207,7 @@ namespace HListTests
             };
 
             // Act
-            var indexes = hList.Get(10)!;
+            var indexes = hList.GetIndexes(10)!;
 
             // Assert
             Assert.Contains(0, indexes);
@@ -230,7 +230,7 @@ namespace HListTests
             hList.Remove(10);
 
             // Assert
-            var indexes = hList.Get(10);
+            var indexes = hList.GetIndexes(10);
 
             Assert.Null(indexes);
             Assert.DoesNotContain(10, hList);
