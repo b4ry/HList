@@ -38,7 +38,7 @@ namespace HListTests
         }
 
         [Fact]
-        public void HList_ShouldBeAccessedByIndex_WhenIndexIsWithinRange()
+        public void HListValue_ShouldBeAccessibleByItsIndex_WhenIndexIsWithinRange()
         {
             // Arrange
             var hList = new HList<int>
@@ -245,7 +245,7 @@ namespace HListTests
             };
 
             // Act & Assert
-            Assert.Throws<ArgumentNullException>(() => hList.Remove(16));
+            Assert.Throws<ArgumentNullException>(() => hList.Remove(null));
         }
     }
 }
