@@ -4,6 +4,7 @@ namespace HListTests
 {
     public class HListTests
     {
+        /* CANARY TESTS */
         [Fact]
         public void HList_ShouldBeCreatedProperly_WhenInitialized()
         {
@@ -14,6 +15,7 @@ namespace HListTests
             Assert.NotNull(hList);
         }
 
+        /* ADDING TESTS */
         [Fact]
         public void AddMethod_ShouldAddArgument_WhenCalledWithThisArgument()
         {
@@ -37,6 +39,7 @@ namespace HListTests
             Assert.Throws<ArgumentNullException>(() => hList.Add(null));
         }
 
+        /* INDEXING TESTS */
         [Fact]
         public void HListValue_ShouldBeAccessibleByItsIndex_WhenIndexIsWithinRange()
         {
@@ -77,6 +80,19 @@ namespace HListTests
 
             // Act & Assert
             Assert.Throws<ArgumentOutOfRangeException>(() => hList[1]);
+        }
+
+        [Fact]
+        public void HList_ShouldThrowArgumentNullException_WhenReplacingValueIsNull()
+        {
+            // Arrange
+            var hList = new HList<int?>
+            {
+                10
+            };
+            
+            // Act & Assert
+            Assert.Throws<ArgumentNullException>(() => hList[0] = null);
         }
 
         [Fact]
@@ -134,8 +150,9 @@ namespace HListTests
             Assert.Contains(1, indexes);
         }
 
+        /* GETTING TESTS */
         [Fact]
-        public void GetMethod_ShouldThrowArgumentNullException_ValueIsNull()
+        public void GetMethod_ShouldThrowArgumentNullException_WhenValueIsNull()
         {
             // Arrange
             var hList = new HList<int?>();
@@ -197,6 +214,7 @@ namespace HListTests
             Assert.Contains(2, indexes);
         }
 
+        /* REMOVING TESTS */
         [Fact]
         public void RemoveMethod_ShouldRemoveAllValueOccurences_WhenValueExists()
         {

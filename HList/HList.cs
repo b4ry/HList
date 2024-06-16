@@ -77,6 +77,11 @@ namespace HList
 
             set
             {
+                if (value == null)
+                {
+                    throw new ArgumentNullException();
+                }
+
                 var previousValue = _items[index];
 
                 AddAtIndex(value, index);
