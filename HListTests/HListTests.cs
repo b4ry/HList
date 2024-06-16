@@ -22,7 +22,7 @@ namespace HListTests
         }
 
         [Fact]
-        public void AddMethod_ShouldThrowArgumentNullException_WhenCalledWithNull()
+        public void AddMethod_ShouldThrowArgumentNullException_WhenValueIsNull()
         {
             var hList = new HList<int?>();
 
@@ -30,7 +30,7 @@ namespace HListTests
         }
 
         [Fact]
-        public void HListValue_ShouldBeAccessedByItsIndex_WhenIndexWithinRange()
+        public void HList_ShouldBeAccessedByIndex_WhenIndexIsWithinRange()
         {
             var hList = new HList<int>
             {
@@ -43,7 +43,7 @@ namespace HListTests
         }
 
         [Fact]
-        public void HListValue_ShouldThrowArgumentOutOfRangeException_WhenAccessedByNegativeIndex()
+        public void HList_ShouldThrowArgumentOutOfRangeException_WhenAccessedByNegativeIndex()
         {
             var hList = new HList<int>
             {
@@ -54,7 +54,7 @@ namespace HListTests
         }
 
         [Fact]
-        public void HListValue_ShouldThrowArgumentOutOfRangeException_WhenAccessedByIndexOutOfRange()
+        public void HList_ShouldThrowArgumentOutOfRangeException_WhenAccessedByIndexOutOfRange()
         {
             var hList = new HList<int>
             {
@@ -77,8 +77,10 @@ namespace HListTests
             Assert.Equal(1, hList[0]);
         }
 
+        // Should delete previous value index!
+
         [Fact]
-        public void GetMethod_ShouldThrowArgumentNullException_WhenCalledWithNull()
+        public void GetMethod_ShouldThrowArgumentNullException_ValueIsNull()
         {
             var hList = new HList<int?>();
 
@@ -86,7 +88,7 @@ namespace HListTests
         }
 
         [Fact]
-        public void GetMethod_ShouldReturnNull_WhenCalledWithMissingArgument()
+        public void GetMethod_ShouldReturnNull_WhenValueDoesNotExist()
         {
             var hList = new HList<int?>()
             {
@@ -100,7 +102,7 @@ namespace HListTests
         }
 
         [Fact]
-        public void GetMethod_ShouldReturnListOfValueIndexes_WhenCalledWithThisValue()
+        public void GetMethod_ShouldReturnListOfValueIndexes_WhenValueExists()
         {
             var hList = new HList<int?>()
             {
@@ -108,13 +110,13 @@ namespace HListTests
                 10
             };
 
-            var indexes = hList.Get(10);
+            var indexes = hList.Get(10)!;
 
-            Assert.Equal(2, indexes!.Count);
+            Assert.Equal(2, indexes.Count);
         }
 
         [Fact]
-        public void GetMethod_ShouldReturnCorrectListOfValueIndexes_WhenCalledWithThisValue()
+        public void GetMethod_ShouldReturnCorrectListOfValueIndexes_WhenValueExists()
         {
             var hList = new HList<int?>()
             {
@@ -123,10 +125,53 @@ namespace HListTests
                 10
             };
 
+            var indexes = hList.Get(10)!;
+
+            Assert.Contains(0, indexes);
+            Assert.Contains(2, indexes);
+        }
+
+        [Fact]
+        public void RemoveMethod_ShouldRemoveAllValueOccurences_WhenValueExists()
+        {
+            var hList = new HList<int?>()
+            {
+                10,
+                15,
+                10
+            };
+
+            hList.Remove(10);
             var indexes = hList.Get(10);
 
-            Assert.Contains(0, indexes!);
-            Assert.Contains(2, indexes!);
+            Assert.Null(indexes);
+            Assert.DoesNotContain(10, hList);
+        }
+
+        [Fact]
+        public void RemoveMethod_ShouldThrowArgumentNullException_WhenValueDoesNotExist()
+        {
+            var hList = new HList<int?>()
+            {
+                10,
+                15,
+                10
+            };
+
+            Assert.Throws<ArgumentNullException>(() => hList.Remove(16));
+        }
+
+        [Fact]
+        public void RemoveMethod_ShouldThrowArgumentNullException_WhenValueIsNull()
+        {
+            var hList = new HList<int?>()
+            {
+                10,
+                15,
+                10
+            };
+
+            Assert.Throws<ArgumentNullException>(() => hList.Remove(16));
         }
     }
 }

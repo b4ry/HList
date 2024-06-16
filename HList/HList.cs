@@ -5,12 +5,12 @@ namespace HList
     public class HList<T> : IHList<T>, IEnumerable<T>
     {
         private readonly IList<T> _items;
-        private readonly IDictionary<int, IList<int>> _valueIndexes;
+        private readonly IDictionary<int, HashSet<int>> _valueIndexes;
 
         public HList()
         {
             _items = [];
-            _valueIndexes = new Dictionary<int, IList<int>>();
+            _valueIndexes = new Dictionary<int, HashSet<int>>();
         }
 
         public int Count => _items.Count;
@@ -27,7 +27,7 @@ namespace HList
 
             _items.Add(argument);
 
-            if (_valueIndexes.TryGetValue(hash, out IList<int>? indexes))
+            if (_valueIndexes.TryGetValue(hash, out HashSet<int>? indexes))
             {
                 indexes.Add(newIndex);
             } 
@@ -37,7 +37,7 @@ namespace HList
             }
         }
 
-        public IList<int>? Get(T argument)
+        public HashSet<int>? Get(T argument)
         {
             if (argument == null)
             {
@@ -46,9 +46,26 @@ namespace HList
 
             var hash = argument.GetHashCode();
 
-            _valueIndexes.TryGetValue(hash, out IList<int>? indexes);
+            _valueIndexes.TryGetValue(hash, out HashSet<int>? indexes);
 
             return indexes;
+        }
+
+        public void Remove(T argument)
+        {
+            if(argument == null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            var indexes = Get(argument)!.OrderByDescending(x => x);
+
+            _valueIndexes.Remove(argument!.GetHashCode());
+
+            foreach(var index in indexes)
+            {
+                _items.RemoveAt(index);
+            }
         }
 
         public T this[int index]
