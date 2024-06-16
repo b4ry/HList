@@ -49,14 +49,7 @@ namespace HList
 
             _items.Add(argument); // amortized O(1)
 
-            if (_valueIndexes.TryGetValue(hash, out HashSet<int>? indexes)) // O(1)
-            {
-                indexes.Add(newIndex); // amortized O(1)
-            } 
-            else
-            {
-                _valueIndexes.Add(hash, [newIndex]); // amortized O(1)
-            }
+            AddIndex(newIndex, hash); // amortized O(1)
         }
 
         public HashSet<int>? GetIndexes(T argument) // depends on the GetHashCode implementation, but usually O(1)
@@ -141,6 +134,11 @@ namespace HList
 
             _items[index] = argument; // O(1)
 
+            AddIndex(index, hash); // amortized O(1)
+        }
+
+        private void AddIndex(int index, int hash) // amortized O(1)
+        {
             if (_valueIndexes.TryGetValue(hash, out HashSet<int>? indexes)) // O(1)
             {
                 indexes.Add(index); // amortized O(1)
