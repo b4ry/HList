@@ -15,9 +15,9 @@ namespace HListTests
             Assert.NotNull(hList);
         }
 
-        /* ADDING TESTS */
+        /* ADD */
         [Fact]
-        public void AddMethod_ShouldAddArgument_WhenCalledWithThisArgument()
+        public void AddMethod_ShouldAddArgument()
         {
             // Arrange
             var hList = new HList<int>();
@@ -39,7 +39,43 @@ namespace HListTests
             Assert.Throws<ArgumentNullException>(() => hList.Add(null));
         }
 
-        /* INDEXING TESTS */
+        [Fact]
+        public void AddRange_ShouldAddArguments()
+        {
+            // Arrange
+            var hList = new HList<int>();
+
+            // Act
+            hList.AddRange([1,5,4,1]);
+
+            // Assert
+            Assert.Equal(4, hList.Count);
+            Assert.Contains(1, hList);
+            Assert.Contains(5, hList);
+            Assert.Contains(4, hList);
+        }
+
+        [Fact]
+        public void AddRange_ShouldAddArgumentIndexes()
+        {
+            // Arrange
+            var hList = new HList<int>();
+
+            // Act
+            hList.AddRange([1, 5, 4, 1]);
+
+            // Assert
+            var oneIndexes = hList.GetIndexes(1)!;
+            var fiveIndexes = hList.GetIndexes(5)!;
+            var fourIndexes = hList.GetIndexes(4)!;
+
+            Assert.Contains(0, oneIndexes);
+            Assert.Contains(3, oneIndexes);
+            Assert.Contains(1, fiveIndexes);
+            Assert.Contains(2, fourIndexes);
+        }
+
+        /* INDEX */
         [Fact]
         public void HListValue_ShouldBeAccessibleByItsIndex_WhenIndexIsWithinRange()
         {
@@ -150,7 +186,7 @@ namespace HListTests
             Assert.Contains(1, indexes);
         }
 
-        /* GETTING TESTS */
+        /* GET */
         [Fact]
         public void GetMethod_ShouldThrowArgumentNullException_WhenValueIsNull()
         {
@@ -214,7 +250,7 @@ namespace HListTests
             Assert.Contains(2, indexes);
         }
 
-        /* REMOVING TESTS */
+        /* REMOVE */
         [Fact]
         public void RemoveMethod_ShouldRemoveAllValueOccurences_WhenValueExists()
         {

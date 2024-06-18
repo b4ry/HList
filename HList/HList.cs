@@ -52,6 +52,14 @@ namespace HList
             AddIndex(newIndex, hash); // amortized O(1)
         }
 
+        public void AddRange(ICollection<T> arguments) // O(m)
+        {
+            foreach(var argument in arguments) // O(m)
+            {
+                Add(argument); // depends on the GetHashCode implementation, but usually amortized O(1)
+            }
+        }
+
         public HashSet<int>? GetIndexes(T argument) // depends on the GetHashCode implementation, but usually O(1)
         {
             if (argument == null)
