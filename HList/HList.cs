@@ -87,6 +87,11 @@ namespace HList
         {
             get
             {
+                if(index < 0 || index == _items.Count)
+                {
+                    throw new ArgumentOutOfRangeException();
+                }
+
                 return _items[index]; // O(1)
             }
 
